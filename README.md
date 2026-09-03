@@ -1,77 +1,74 @@
-# Funded Store — easiest local setup
+# Funded Store
 
-This project has been prepared so you can run the **frontend + backend + PostgreSQL database together with Docker**.
+A full-stack e-commerce and EMI financing application built with a React frontend, Node.js/Express backend API, and PostgreSQL database. The complete application is containerized using Docker Compose for easy local setup and execution.
 
-## Requirements
+## Demo
 
-Install only:
-- Docker Desktop (Windows/macOS) or Docker Engine + Compose (Linux)
+- **Local Demo:** http://localhost:3000
+- **Backend API:** http://localhost:5000/api
+- **Deployed Demo:** _Add deployed URL here_
+- **Demo Video:** _Add Google Drive/YouTube link here_
 
-You do **not** need to install PostgreSQL, Vite, Express, pnpm, or Node.js on your host machine.
+> For the demo video, make sure the sharing permission is set to **Anyone with the link can view**.
 
-## Start everything
+---
 
-### Windows
-Double-click `start.bat`, or run:
+## Tech Stack
 
-```powershell
-docker compose up --build
-```
+### Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Query
+- Wouter
+- Zod
 
-### macOS / Linux
+### Backend
+- Node.js
+- TypeScript
+- Express.js
+- CORS
+- Pino HTTP
+- Zod
 
-```bash
-chmod +x start.sh
-./start.sh
-```
+### Database
+- PostgreSQL 17
+- Drizzle ORM
+- Drizzle-Zod
 
-Or:
+### DevOps
+- Docker
+- Docker Compose
+- Nginx
+- pnpm Workspaces
 
-```bash
-docker compose up --build
-```
+---
 
-Then open:
+## Architecture
 
-**http://localhost:3000**
-
-The API is also available at **http://localhost:5000/api**.
-
-## Stop
-
-Press `Ctrl+C`.
-
-To stop and remove containers:
-
-```bash
-docker compose down
-```
-
-## Reset the database
-
-If you want a completely fresh database:
-
-```bash
-docker compose down -v
-docker compose up --build
-```
-
-The demo products are loaded automatically on the first database startup.
-
-## What is running?
-
-- Frontend: React + Vite build served by Nginx → `localhost:3000`
-- Backend: Node.js + Express → `localhost:5000`
-- Database: PostgreSQL → internal Docker network (no database installation/configuration required)
-
-Nginx forwards `/api/*` from the frontend to the backend, so the browser uses one simple URL.
-
-## Important
-
-The original Replit-specific setup and host PostgreSQL requirement are no longer necessary for the normal local run. The Docker setup is the recommended way to run this project locally.
-
-If Docker Desktop is already installed, the normal workflow is simply:
-
-```bash
-docker compose up --build
-```
+```text
+                    USER
+                     |
+                     v
+            +----------------+
+            |    Frontend    |
+            | React + Vite   |
+            |    Port 3000   |
+            +-------+--------+
+                    |
+                    | HTTP / API
+                    v
+            +----------------+
+            |    Backend     |
+            | Node + Express |
+            |    Port 5000   |
+            +-------+--------+
+                    |
+                    | Drizzle ORM
+                    v
+            +----------------+
+            |   PostgreSQL   |
+            |    Database    |
+            |     :5432      |
+            +----------------+
