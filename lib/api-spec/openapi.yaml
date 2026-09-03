@@ -1,0 +1,173 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: products
+    description: Product catalog and purchase options
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /products:
+    get:
+      operationId: listProducts
+      tags: [products]
+      summary: List products
+      description: Returns all products available for mutual-fund-backed EMI financing.
+      responses:
+        "200":
+          description: Product list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductSummary"
+  /products/{slug}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get a product
+      description: Returns a product with variants and EMI plans.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ProductSummary:
+      type: object
+      required: [id, slug, brand, name, tagline, startingPrice, mrp, imageUrl]
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+        brand:
+          type: string
+        name:
+          type: string
+        tagline:
+          type: string
+        startingPrice:
+          type: number
+        mrp:
+          type: number
+        imageUrl:
+          type: string
+        badge:
+          type: ["string", "null"]
+    Product:
+      type: object
+      required:
+        [id, slug, brand, name, tagline, description, mrp, price, imageUrl, variants, plans]
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+        brand:
+          type: string
+        name:
+          type: string
+        tagline:
+          type: string
+        description:
+          type: string
+        mrp:
+          type: number
+        price:
+          type: number
+        imageUrl:
+          type: string
+        badge:
+          type: ["string", "null"]
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Variant"
+        plans:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmiPlan"
+    Variant:
+      type: object
+      required: [id, name, value, color, priceAdjustment, imageUrl]
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        value:
+          type: string
+        color:
+          type: string
+        priceAdjustment:
+          type: number
+        imageUrl:
+          type: string
+    EmiPlan:
+      type: object
+      required: [id, tenureMonths, monthlyPayment, interestRate, cashback, isPopular, totalPayable]
+      properties:
+        id:
+          type: number
+        tenureMonths:
+          type: number
+        monthlyPayment:
+          type: number
+        interestRate:
+          type: number
+        cashback:
+          type: number
+        isPopular:
+          type: boolean
+        totalPayable:
+          type: number
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+

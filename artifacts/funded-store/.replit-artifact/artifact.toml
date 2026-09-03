@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Funded Store"
+description = "A responsive product storefront that lets shoppers compare smartphones, variants, and mutual-fund-backed EMI plans before continuing to checkout."
+version = "1.0.0"
+id = "artifacts/funded-store"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23407
+
+[services.development]
+run = "pnpm --filter @workspace/funded-store run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/funded-store", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/funded-store/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23407"
+BASE_PATH = "/"
