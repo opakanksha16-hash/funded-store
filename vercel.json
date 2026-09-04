@@ -1,7 +1,7 @@
 {
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter @workspace/funded-store run build",
-  "outputDirectory": "dist/public",
+  "outputDirectory": "artifacts/funded-store/dist/public",
   "rewrites": [
     {
       "source": "/products/:slug",
