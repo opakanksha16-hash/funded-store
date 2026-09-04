@@ -4,6 +4,10 @@
   "outputDirectory": "artifacts/funded-store/dist/public",
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://mutual-fund-emi-store--akankshasing128.replit.app/api/:path*"
+    },
+    {
       "source": "/products/:slug",
       "destination": "/index.html"
     }
